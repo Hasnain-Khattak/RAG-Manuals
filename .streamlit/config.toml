@@ -1,0 +1,5 @@
+[theme]
+primaryColor = "#1E3A8A"  # Deep Blue
+backgroundColor = "#F8FAFC"  # Light Grey
+secondaryBackgroundColor = "#E2E8F0"  # Medium Grey
+textColor = "#1F2937"  # Dark Grey
