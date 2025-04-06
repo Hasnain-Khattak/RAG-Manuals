@@ -36,6 +36,47 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE_DIR = os.path.join(CURRENT_DIR, "db", "updated-db")
 IMAGE_DB_PATH = os.path.join(CURRENT_DIR, "db", "images.db")
 
+def initialize_database():
+    """Initialize SQLite database with proper permissions"""
+    try:
+        # Ensure directory exists
+        db_dir = os.path.dirname(IMAGE_DB_PATH)
+        os.makedirs(db_dir, exist_ok=True)
+        
+        # Set directory permissions (777 for development, adjust for production)
+        os.chmod(db_dir, 0o777)
+        
+        # If database exists, set proper permissions
+        if os.path.exists(IMAGE_DB_PATH):
+            os.chmod(IMAGE_DB_PATH, 0o666)
+        else:
+            # Create new database file with proper permissions
+            open(IMAGE_DB_PATH, 'a').close()
+            os.chmod(IMAGE_DB_PATH, 0o666)
+        
+        # Create database connection
+        conn = sqlite3.connect(IMAGE_DB_PATH)
+        cursor = conn.cursor()
+        
+        # Create table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS images (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                pdf_name TEXT,
+                page_num INTEGER,
+                image BLOB,
+                pdf_link TEXT
+            )
+        """)
+        conn.commit()
+        return conn, cursor
+        
+    except Exception as e:
+        print(f"Error initializing database: {e}")
+        if 'conn' in locals():
+            conn.close()
+        raise
+
 print(f"Current directory: {CURRENT_DIR}")
 print(f"Database directory path: {DATABASE_DIR}")
 
@@ -138,19 +179,21 @@ def image_to_bytes(image_path):
     except Exception as e:
         return f"Error: {str(e)}"
 
-# Connect to SQLite and create image table
-with sqlite3.connect(IMAGE_DB_PATH) as conn:
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS images (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            pdf_name TEXT,
-            page_num INTEGER,
-            image BLOB,
-            pdf_link TEXT
-            )
-    """)
-    conn.commit()
+# # Connect to SQLite and create image table
+# with sqlite3.connect(IMAGE_DB_PATH) as conn:
+    # cursor = conn.cursor()
+#     cursor.execute("""
+#         CREATE TABLE IF NOT EXISTS images (
+#             id INTEGER PRIMARY KEY AUTOINCREMENT,
+#             pdf_name TEXT,
+#             page_num INTEGER,
+#             image BLOB,
+#             pdf_link TEXT
+#             )
+#     """)
+    # conn.commit()
+
+
 
 def store_images_from_pdf(pdf_path, cleanName):
     """Extracts and stores images from a PDF into SQLite."""
@@ -158,8 +201,9 @@ def store_images_from_pdf(pdf_path, cleanName):
     doc = fitz.open(pdf_path[0])
     pdf_name = os.path.basename(pdf_path[0])
     pages = pdf_to_pngs(pdf_path, cleanName)
-
     
+    conn = None
+    conn, cursor = initialize_database()
     #for index, page_num in enumerate(range(len(doc))):
     for index, page in enumerate(pages):
             link = pdf_path[1]
@@ -220,20 +264,27 @@ def create_vector_store():
     except Exception as e:
         print(f"❌ Error creating vector store: {e}")
 
+interactive = os.environ.get("INTERACTIVE_MODE", "true").lower() == "true"
 # Main execution logic
 if __name__ == "__main__":
     if not os.path.exists(DATABASE_DIR):
         print("Database does not exist. Initializing vector store...")
         create_vector_store()
     else:
-        user_input = input("Vector store already exists. Do you want to recreate the vector database? (yes/no): ").strip().lower()
-        
-        if user_input == "yes":
-            shutil.rmtree(DATABASE_DIR)  # Remove the existing FAISS database
-            os.remove(IMAGE_DB_PATH) if os.path.exists(IMAGE_DB_PATH) else None  # Remove image DB
-            create_vector_store()
+        if interactive:
+            user_input = input("Vector store already exists. Do you want to recreate the vector database? (yes/no): ").strip().lower()
+            if user_input == "yes":
+                shutil.rmtree(DATABASE_DIR)
+                if os.path.exists(IMAGE_DB_PATH):
+                    os.remove(IMAGE_DB_PATH)
+                create_vector_store()
+            else:
+                print("Using existing vector store.")
         else:
-            print("Using existing vector store.")
+           shutil.rmtree(DATABASE_DIR)
+           if os.path.exists(IMAGE_DB_PATH):
+                os.remove(IMAGE_DB_PATH)
+                create_vector_store()
 
 # Close SQLite connection
 #conn.close()
