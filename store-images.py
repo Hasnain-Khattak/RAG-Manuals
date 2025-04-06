@@ -264,20 +264,27 @@ def create_vector_store():
     except Exception as e:
         print(f"❌ Error creating vector store: {e}")
 
+interactive = os.environ.get("INTERACTIVE_MODE", "true").lower() == "true"
 # Main execution logic
 if __name__ == "__main__":
     if not os.path.exists(DATABASE_DIR):
         print("Database does not exist. Initializing vector store...")
         create_vector_store()
     else:
-        user_input = input("Vector store already exists. Do you want to recreate the vector database? (yes/no): ").strip().lower()
-        
-        if user_input == "yes":
-            shutil.rmtree(DATABASE_DIR)  # Remove the existing FAISS database
-            os.remove(IMAGE_DB_PATH) if os.path.exists(IMAGE_DB_PATH) else None  # Remove image DB
-            create_vector_store()
+        if interactive:
+            user_input = input("Vector store already exists. Do you want to recreate the vector database? (yes/no): ").strip().lower()
+            if user_input == "yes":
+                shutil.rmtree(DATABASE_DIR)
+                if os.path.exists(IMAGE_DB_PATH):
+                    os.remove(IMAGE_DB_PATH)
+                create_vector_store()
+            else:
+                print("Using existing vector store.")
         else:
-            print("Using existing vector store.")
+           shutil.rmtree(DATABASE_DIR)
+           if os.path.exists(IMAGE_DB_PATH):
+                os.remove(IMAGE_DB_PATH)
+                create_vector_store()
 
 # Close SQLite connection
 #conn.close()
