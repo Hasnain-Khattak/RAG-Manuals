@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      cache_from:
+        - type=registry,ref=python:3.9-slim
+    volumes:
+      - .:/app   # Mount the host's ./app directory to /app inside the container
+    ports:
+      - "80:8501"  # Expose port 5000 for the app
+    environment:
+      - FLASK_ENV=development
+    command: streamlit run app.py   # You can adjust this based on your app's entry point
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # Optional for networking between container and host
