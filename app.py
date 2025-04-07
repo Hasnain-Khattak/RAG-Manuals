@@ -26,7 +26,7 @@ st.set_page_config(page_title="RAG Based On Manuals", layout="wide", page_icon="
 # Title
 st.markdown("""
     <h1 style='text-align: center;'>
-        <span style='color: #00c220;'>RAG </span>
+        <span style='color: #00c220;'>RAG Based On Manuals</span>
     </h1>
 """, unsafe_allow_html=True)
 
