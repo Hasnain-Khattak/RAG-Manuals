@@ -2,7 +2,7 @@
 
 # Load environment variables from .env file
 if [ -f .env ]; then
-    export $(cat home/ubuntu/RAG-Manuals/.env | grep -v '^#' | xargs)
+    export $(cat home/root/RAG-Manuals/.env | grep -v '^#' | xargs)
 else
     echo "Error: .env file not found"
     exit 1
