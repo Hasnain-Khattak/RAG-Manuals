@@ -19,7 +19,7 @@ import time
 load_dotenv()
 
 #os.environ['OPNEAI_API_KEY'] = "API-KEY"
-os.environ['OPENAI_API_KEY'] = os.getenv('OPNEAI_API_KEY')
+os.environ['OPENAI_API_KEY'] = "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"
 client = OpenAI()
 # Define paths
 DATA_PATHS = [
