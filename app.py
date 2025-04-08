@@ -16,7 +16,7 @@ dotenv.load_dotenv()
 # API keys
 
 
-os.environ['OPENAI_API_KEY'] = "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"
+os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 
 # Streamlit configuration
 st.set_page_config(page_title="RAG Based On Manuals", layout="wide", page_icon="📚")
