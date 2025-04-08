@@ -4,11 +4,9 @@ import sqlite3
 from PIL import Image
 import io
 import re
-from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_community.vectorstores.faiss import FAISS
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.output_parsers import StrOutputParser
 

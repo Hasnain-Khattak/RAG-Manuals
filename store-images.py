@@ -1,7 +1,6 @@
 from langchain_community.document_loaders.pdf import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores.faiss import FAISS
 import os, dotenv
 import shutil
