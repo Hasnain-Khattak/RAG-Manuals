@@ -30,6 +30,8 @@ DATA_PATHS = [
     ["./Data/Godzilla_Kaiju_Wars_VR_Manual.pdf", "https://drive.google.com/file/d/1wn0uqOyg2Cf2OotvXEJ9A7osGBuyXsey/view"],
     ["./Data/ICEBALL FX rev R 1-23-25.pdf", "https://www.dropbox.com/scl/fo/shqiv1reglc1rtgoxfvjj/AJMm-Bwyl7G12OkLMcOIgk8?dl=0&e=1&preview=ICEBALL+FX+rev+R+1-23-25.pdf&rlkey=r79naavebsvwi3xlu0d4bbn4d&st=3xd2e3wu"],
     ["./Data/squiggle.pdf", "https://www.manualslib.com/manual/1824374/Baytek-Games-Squiggle.html"],
+    ["C:/Users/Intlgcr/Desktop/hold/sample/A6_039BD5B2D0EBF", "https://www.unispartsandservice.com/moduledocuments/embed/250/20200910_ON_POINT_SERVICE_Manual_En_2CA123513967E.pdf"],
+    ["C:/Users/Intlgcr/Desktop/hold/sample/After_DarkDLX__A105__20121208_7A019C06B663E", "https://www.unispartsandservice.com/moduledocuments/embed/250/20200910_ON_POINT_SERVICE_Manual_En_2CA123513967E.pdf"]
 ]
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
