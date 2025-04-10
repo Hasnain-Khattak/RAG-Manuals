@@ -19,19 +19,19 @@ dotenv.load_dotenv()
 os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 
 # Streamlit configuration
-st.set_page_config(page_title="RAG Based On Manuals", layout="wide", page_icon="📚")
+st.set_page_config(page_title="UNIS Tech Support Chat", layout="wide", page_icon="📚")
 
 # Title
 st.markdown("""
     <h1 style='text-align: center;'>
-        <span style='color: #00c220;'>RAG Based On Manuals</span>
+        <span style='color: #0071ba;'>UNIS Tech Support Chat</span>
     </h1>
 """, unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
-    st.markdown("## **About RAG**")
-    st.write("This bot can answer questions based on Manuals.")
+    st.markdown("## **About Unis Chat**")
+    st.write("Ask tech support questions here and receive answers with source material.")
     st.divider()
 
 # Constants
